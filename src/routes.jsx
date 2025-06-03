@@ -1,0 +1,24 @@
+import { Routes, Route } from 'react-router-dom';
+import Home from './pages/Home';
+import DishDetails from './pages/DishDetails';
+import Login from './pages/Login';
+import Cart from './pages/Cart';
+import Profile from './pages/Profile';
+import SellerDashboard from './pages/SellerDashboard';
+import AddDish from './pages/AddDish';
+import OrderHistory from './pages/OrderHistory';
+
+export default function RoutesComponent() {
+  return (
+    <Routes>
+      <Route path="/" element={<Home />} />
+      <Route path="/dish/:id" element={<DishDetails />} />
+      <Route path="/login" element={<Login />} />
+      <Route path="/cart" element={<Cart />} />
+      <Route path="/profile" element={<Profile />} />
+      <Route path="/seller" element={<SellerDashboard />} />
+      <Route path="/add" element={<AddDish />} />
+      <Route path="/orders" element={<OrderHistory />} />
+    </Routes>
+  );
+}
