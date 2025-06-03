@@ -7,6 +7,7 @@ import Profile from './pages/Profile';
 import SellerDashboard from './pages/SellerDashboard';
 import AddDish from './pages/AddDish';
 import OrderHistory from './pages/OrderHistory';
+import ComponentPreview from './pages/ComponentPreview';
 
 export default function RoutesComponent() {
   return (
@@ -19,6 +20,7 @@ export default function RoutesComponent() {
       <Route path="/seller" element={<SellerDashboard />} />
       <Route path="/add" element={<AddDish />} />
       <Route path="/orders" element={<OrderHistory />} />
+      <Route path="/preview" element={<ComponentPreview />} />
     </Routes>
   );
 }

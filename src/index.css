@@ -3,3 +3,12 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+@layer base {
+  body {
+    @apply bg-white text-gray-800; /* Standard ljus tema för body */
+  }
+  html.dark body {
+    @apply bg-gray-900 text-gray-100; /* Mörkt tema för body, matcha App.jsx eller välj egna */
+  }
+}
