@@ -6,27 +6,18 @@ export default function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
   const [darkMode, setDarkMode] = useState(() => {
     const stored = localStorage.getItem("theme");
-    const systemPrefersDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
-    
-    let initialDarkMode;
-    if (stored) {
-      initialDarkMode = stored === "dark";
-    } else {
-      initialDarkMode = systemPrefersDark;
-    }
-    return initialDarkMode;
+    return stored === "dark" || (!stored && window.matchMedia("(prefers-color-scheme: dark)").matches);
   });
-
+  
   useEffect(() => {
-    const root = document.documentElement;
     if (darkMode) {
-      root.classList.add("dark");
+      document.documentElement.classList.add("dark");
       localStorage.setItem("theme", "dark");
     } else {
-      root.classList.remove("dark");
+      document.documentElement.classList.remove("dark");
       localStorage.setItem("theme", "light");
     }
-  }, [darkMode]);
+  }, [darkMode]);  
 
   const toggleDarkMode = () => {
     setDarkMode(prevMode => !prevMode);
