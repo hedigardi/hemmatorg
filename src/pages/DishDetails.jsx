@@ -34,9 +34,11 @@ export default function DishDetails() {
 
   const handleAddToCart = () => {
     if (dish) {
-      addItemToCart(dish, 1); // Lägg till 1 av den aktuella rätten
+      console.log("DishDetails.jsx - handleAddToCart triggered at", new Date().toISOString());
+      addItemToCart(dish, 1);
     }
   };
+  
   if (loading) return <p className="p-4 text-center">Laddar maträttsdetaljer...</p>;
   if (error) return <p className="p-4 text-center text-red-500">{error}</p>;
   if (!dish) return <p className="p-4 text-center">Maträtten kunde inte hittas.</p>;

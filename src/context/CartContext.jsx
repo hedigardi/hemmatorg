@@ -27,27 +27,57 @@ export function CartProvider({ children }) {
 
   // Funktion för att lägga till en rätt i varukorgen
   const addItemToCart = (dish, quantity = 1) => {
+    console.log("addItemToCart received call for dish:", dish.title, "with quantity parameter:", quantity);
     setCartItems(prevItems => {
       const existingItemIndex = prevItems.findIndex(item => item.dish.id === dish.id);
 
       if (existingItemIndex > -1) {
-        // Rätten finns redan, öka antalet
-        const newItems = [...prevItems];
-        newItems[existingItemIndex].quantity += quantity;
-        return newItems;
+        // Varan finns redan i varukorgen, uppdatera antalet
+        // Skapa en ny array OCH ett nytt objekt för den vara som uppdateras
+        const updatedItems = prevItems.map((item, index) => {
+          if (index === existingItemIndex) {
+            // console.log("Inside setCartItems callback: Item found. Current quantity:", item.quantity, "Quantity variable value:", quantity);
+            const newQuantity = item.quantity + 1; // Addera alltid 1
+            // console.log("Inside setCartItems callback: New quantity after adding 1:", newQuantity);
+            return { ...item, quantity: newQuantity }; // Returnera ett nytt objekt med uppdaterat antal
+          }
+          return item; // Returnera oförändrade objekt
+        });
+        return updatedItems;
       } else {
-        // Rätten finns inte, lägg till som ny post
-        return [...prevItems, { dishId: dish.id, quantity, dish }];
+        // Varan är ny, lägg till den i varukorgen med det specificerade antalet
+        return [...prevItems, { dish, quantity: quantity }]; // Använd 'quantity' istället för 'quantityToAdd'
       }
     });
   };
 
-  // Funktion för att ta bort en rätt från varukorgen (kan byggas ut senare)
-  const removeItemFromCart = (dishId) => {
-    setCartItems(prevItems => prevItems.filter(item => item.dishId !== dishId));
+  // Funktion för att ta bort en rätt från varukorgen eller minska antalet
+  // Denna funktion verkar ha blivit återställd till en äldre version i din kontext.
+  // Vi bör använda den version som hanterar minskning av antal också.
+  const removeItemFromCart = (dishId, quantityToRemove = 1) => {
+    setCartItems(prevItems => {
+      const existingItemIndex = prevItems.findIndex(item => item.dish.id === dishId);
+
+      if (existingItemIndex > -1) {
+        const currentItem = prevItems[existingItemIndex];
+        const newQuantity = currentItem.quantity - quantityToRemove;
+
+        if (newQuantity <= 0) {
+          // Ta bort varan helt om antalet blir 0 eller mindre
+          return prevItems.filter((_, index) => index !== existingItemIndex);
+        }
+        // Annars, uppdatera antalet för varan genom att skapa ett nytt objekt
+        return prevItems.map((item, index) =>
+          index === existingItemIndex
+            ? { ...item, quantity: newQuantity }
+            : item
+        );
+      }
+      return prevItems; // Returnera oförändrad lista om rätten inte finns
+    });
   };
 
-  // Funktion för att tömma varukorgen (kan byggas ut senare)
+  // Funktion för att tömma varukorgen
   const clearCart = () => {
     setCartItems([]);
   };
