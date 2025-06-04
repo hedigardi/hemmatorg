@@ -52,12 +52,18 @@ export default function Navbar() {
           <div className="hidden md:flex gap-4">
             <Link to="/preview">Preview</Link>
             <Link to="/cart">Varukorg</Link>
-            <Link to="/profile">Profil</Link>
+            {isAuthenticated && (
+              <>
+                <Link to="/profile">Profil</Link>
+                <Link to="/seller">Säljardashboard</Link>
+                <Link to="/add">Lägg till maträtt</Link>
+              </>
+            )}
             {isAuthenticated ? (
-                <button onClick={handleLogout} className="hover:underline">Logga ut</button>
-              ) : (
-                <Link to="/login">Logga in</Link>
-              )}
+              <button onClick={handleLogout} className="hover:underline">Logga ut</button>
+            ) : (
+              <Link to="/login">Logga in</Link>
+            )}
           </div>
 
           {/* Hamburger icon */}
@@ -76,8 +82,18 @@ export default function Navbar() {
         <div className="flex flex-col gap-2 mt-2 md:hidden">
           <Link to="/preview" onClick={() => setIsOpen(false)}>Preview</Link>
           <Link to="/cart" onClick={() => setIsOpen(false)}>Varukorg</Link>
-          <Link to="/profile" onClick={() => setIsOpen(false)}>Profil</Link>
-          <Link to="/login" onClick={() => setIsOpen(false)}>Logga in</Link>
+          {isAuthenticated && (
+            <>
+              <Link to="/profile" onClick={() => setIsOpen(false)}>Profil</Link>
+              <Link to="/seller" onClick={() => setIsOpen(false)}>Säljardashboard</Link>
+              <Link to="/add" onClick={() => setIsOpen(false)}>Lägg till maträtt</Link>
+            </>
+          )}
+          {isAuthenticated ? (
+            <button onClick={handleLogout} className="hover:underline">Logga ut</button>
+          ) : (
+            <Link to="/login" onClick={() => setIsOpen(false)}>Logga in</Link>
+          )}
         </div>
       )}
     </nav>

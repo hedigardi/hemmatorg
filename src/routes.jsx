@@ -25,8 +25,22 @@ export default function RoutesComponent() {
           </ProtectedRoute>
         }
       />
-      <Route path="/seller" element={<SellerDashboard />} />
-      <Route path="/add" element={<AddDish />} />
+      <Route
+        path="/seller"
+        element={
+          <ProtectedRoute>
+            <SellerDashboard />
+          </ProtectedRoute>
+        }
+      />
+      <Route
+        path="/add"
+        element={
+          <ProtectedRoute>
+            <AddDish />
+          </ProtectedRoute>
+        }
+      />
       <Route path="/orders" element={<OrderHistory />} />
       <Route path="/preview" element={<ComponentPreview />} />
     </Routes>

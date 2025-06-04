@@ -1,11 +1,15 @@
 import React from "react";
 import DishForm from "../components/DishForm";
+import { addDishToFirestore } from "../services/addDishToFirestore";
 
 export default function AddDish() {
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    // Här kan du hämta och skicka formulärdata senare
-    alert("Rätt sparad! (simulerat)");
+  const handleSubmit = async (dishData) => {
+    try {
+      const newDishId = await addDishToFirestore(dishData);
+      alert(`Rätt sparad! (ID: ${newDishId})`);
+    } catch (error) {
+      alert("Det gick inte att spara rätten.");
+    }
   };
 
   return (
