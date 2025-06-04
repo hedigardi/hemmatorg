@@ -42,7 +42,15 @@ export default function SellerDashboard() {
   return (
     <div className="p-4">
       <h1 className="text-2xl font-bold mb-4">Säljarpanel</h1>
-      <div className="flex justify-between items-center mb-4">
+      <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-4 gap-4">
+        {/* Link to Seller Orders */}
+        <Link
+          to="/seller/orders"
+          className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600"
+        >
+          Visa inkomna beställningar
+        </Link>
+        {/* Link to Add New Dish */}
         <h2 className="text-xl font-semibold">Dina rätter</h2>
         <Link
           to="/add"

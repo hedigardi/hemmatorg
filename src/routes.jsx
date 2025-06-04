@@ -10,6 +10,7 @@ import OrderHistory from "./pages/OrderHistory";
 import ComponentPreview from "./pages/ComponentPreview";
 import CheckoutPage from "./pages/CheckoutPage"; // Ny import
 import OrderConfirmationPage from "./pages/OrderConfirmationPage"; // Ny import
+import SellerOrdersPage from "./pages/SellerOrdersPage"; // Ny import
 import ProtectedRoute from "./components/ProtectedRoute";
 
 export default function RoutesComponent() {
@@ -41,6 +42,12 @@ export default function RoutesComponent() {
           <ProtectedRoute>
             <SellerDashboard />
           </ProtectedRoute>
+        }
+      />
+      <Route
+        path="/seller/orders" // Ny route för säljarordrar
+        element={
+          <ProtectedRoute><SellerOrdersPage /></ProtectedRoute>
         }
       />
       <Route
