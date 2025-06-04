@@ -1,44 +1,52 @@
 // src/components/DishForm.jsx
 import React, { useState } from "react";
-import { db } from "../firebase/firebaseConfig";
-import { collection, addDoc, serverTimestamp } from "firebase/firestore";
 import { useAuth } from "../context/AuthContext";
+import TextInput from "../components/form/TextInput";
+import Textarea from "../components/form/Textarea";
+import Dropdown from "../components/form/Dropdown"; 
+import Button from "../components/form/Button";
 
 export default function DishForm({ onSubmit }) {
-  const { user } = useAuth();
+  const { user, isAuthenticated } = useAuth(); // Assuming 'user' object with 'uid' will be available
   const [formData, setFormData] = useState({
     title: "",
     description: "",
     price: "",
     imageUrl: "",
     category: "",
+    ingredients: "",
+    allergens: "",
   });
   const [loading, setLoading] = useState(false);
 
-  const handleChange = (e) => {
+  // Handler for TextInput and Textarea components
+  const handleInputChange = (e) => {
     const { name, value } = e.target;
     setFormData((prev) => ({ ...prev, [name]: value }));
+  };
+  // Specific handler for the Dropdown component
+  const handleCategoryChange = (value) => {
+    setFormData((prev) => ({ ...prev, category: value }));
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
 
-    if (!user) {
-      alert("Du måste vara inloggad för att spara en rätt.");
+    if (!isAuthenticated || !user) {
+      console.error("Du måste vara inloggad för att spara en rätt.");
       setLoading(false);
       return;
     }
 
     try {
-      await addDoc(collection(db, "dishes"), {
+      const dishDataToSubmit = {
         ...formData,
         price: parseFloat(formData.price),
-        sellerId: user.uid,
-        createdAt: serverTimestamp(),
-      });
+        sellerId: user.uid, // Use actual user ID
+      };
 
-      alert("Rätt sparad!");
+      await onSubmit(dishDataToSubmit); // Delegate submission to parent
 
       setFormData({
         title: "",
@@ -46,75 +54,94 @@ export default function DishForm({ onSubmit }) {
         price: "",
         imageUrl: "",
         category: "",
+        ingredients: "",
+        allergens: "",
       });
-
-      onSubmit?.();
     } catch (error) {
-      console.error("Fel vid sparning:", error);
-      alert("Något gick fel.");
+      console.error("Fel vid skickande av formulär:", error);
+      // Error handling (e.g., showing a notification) can be managed by the parent component
     } finally {
       setLoading(false);
     }
   };
 
+  const categoryOptions = [
+    { label: "Vegetariskt", value: "vegetariskt" },
+    { label: "Kött", value: "kött" },
+    { label: "Fisk", value: "fisk" },
+    { label: "Efterrätt", value: "efterrätt" },
+    { label: "Veganskt", value: "veganskt" },
+    { label: "Soppor", value: "soppor" },
+    // Add more categories as needed
+  ];
+
   return (
     <form onSubmit={handleSubmit} className="space-y-4">
-      <input
+      <TextInput
+        label="Titel"
         name="title"
-        type="text"
         placeholder="Titel"
         value={formData.title}
-        onChange={handleChange}
-        className="w-full p-2 border rounded"
+        onChange={handleInputChange}
         required
       />
-      <textarea
+      <Textarea
+        label="Beskrivning"
         name="description"
         placeholder="Beskrivning"
         value={formData.description}
-        onChange={handleChange}
-        className="w-full p-2 border rounded"
+        onChange={handleInputChange}
         required
       />
-      <input
+      <TextInput
+        label="Pris (kr)"
         name="price"
         type="number"
         step="0.01"
         placeholder="Pris"
         value={formData.price}
-        onChange={handleChange}
-        className="w-full p-2 border rounded"
+        onChange={handleInputChange}
         required
       />
-      <input
+      <TextInput
+        label="Bild-URL"
         name="imageUrl"
         type="url"
         placeholder="Bild-URL"
         pattern="https?://.+"
         title="Ange en giltig URL som börjar med http eller https"
         value={formData.imageUrl}
-        onChange={handleChange}
-        className="w-full p-2 border rounded"
+        onChange={handleInputChange}
       />
-      <select
+      <Textarea
+        label="Ingredienser"
+        name="ingredients"
+        placeholder="Lista ingredienserna..."
+        value={formData.ingredients}
+        onChange={handleInputChange}
+      />
+      <Textarea
+        label="Allergiinformation (frivilligt)"
+        name="allergens"
+        placeholder="Ange eventuella allergener..."
+        value={formData.allergens}
+        onChange={handleInputChange}
+      />
+      <Dropdown
+        label="Kategori"
         name="category"
         value={formData.category}
-        onChange={handleChange}
-        className="w-full p-2 border rounded"
-      >
-        <option value="">Välj kategori</option>
-        <option value="vegetariskt">Vegetariskt</option>
-        <option value="kött">Kött</option>
-        <option value="fisk">Fisk</option>
-        <option value="efterrätt">Efterrätt</option>
-      </select>
-      <button
+        onChange={handleCategoryChange} // Use the specific handler
+        options={categoryOptions}
+        required
+      />
+      <Button
         type="submit"
         disabled={loading}
-        className="bg-orange-500 text-white px-4 py-2 rounded hover:bg-orange-600 disabled:opacity-50"
+        variant="primary"
       >
         {loading ? "Sparar..." : "Spara rätt"}
-      </button>
+      </Button>
     </form>
   );
 }

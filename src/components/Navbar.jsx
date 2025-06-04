@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { Menu, X, Sun, Moon } from "lucide-react";
 import { useAuth } from "../context/AuthContext";
+import { useCart } from "../context/CartContext"; // Importera useCart
 
 export default function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
@@ -9,13 +10,12 @@ export default function Navbar() {
     const stored = localStorage.getItem("theme");
     return stored === "dark" || (!stored && window.matchMedia("(prefers-color-scheme: dark)").matches);
   });
-  const { isAuthenticated, logout } = useAuth();
-    const navigate = useNavigate();
+  const { isAuthenticated, logout } = useAuth();  const { totalItems } = useCart(); // Hämta totalItems från CartContext
+  const handleLogout = () => {
 
-    const handleLogout = () => {
-      logout();
-      navigate("/login");
-    };
+    logout();
+    navigate("/login");
+  };
   
   useEffect(() => {
     if (darkMode) {
@@ -51,10 +51,13 @@ export default function Navbar() {
           {/* Desktop links */}
           <div className="hidden md:flex gap-4">
             <Link to="/preview">Preview</Link>
-            <Link to="/cart">Varukorg</Link>
+            <Link to="/cart" className="flex items-center gap-1">
+              Varukorg {totalItems > 0 && <span className="bg-red-500 text-white text-xs font-bold px-2 py-0.5 rounded-full">{totalItems}</span>}
+            </Link>
             {isAuthenticated && (
               <>
                 <Link to="/profile">Profil</Link>
+                <Link to="/orders">Orderhistorik</Link>
                 <Link to="/seller">Säljardashboard</Link>
                 <Link to="/add">Lägg till maträtt</Link>
               </>
@@ -81,7 +84,9 @@ export default function Navbar() {
       {isOpen && (
         <div className="flex flex-col gap-2 mt-2 md:hidden">
           <Link to="/preview" onClick={() => setIsOpen(false)}>Preview</Link>
-          <Link to="/cart" onClick={() => setIsOpen(false)}>Varukorg</Link>
+          <Link to="/cart" onClick={() => setIsOpen(false)} className="flex items-center gap-1">
+            Varukorg {totalItems > 0 && <span className="bg-red-500 text-white text-xs font-bold px-2 py-0.5 rounded-full">{totalItems}</span>}
+          </Link>
           {isAuthenticated && (
             <>
               <Link to="/profile" onClick={() => setIsOpen(false)}>Profil</Link>

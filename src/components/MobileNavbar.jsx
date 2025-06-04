@@ -2,9 +2,11 @@
 import React, { useState } from "react";
 import { Menu, X } from "lucide-react";
 import { Link } from "react-router-dom";
+import { useCart } from "../context/CartContext"; // Importera useCart
 
 export default function MobileNavbar() {
   const [isOpen, setIsOpen] = useState(false);
+  const { totalItems } = useCart(); // Hämta totalItems från CartContext
 
   return (
     <nav className="md:hidden bg-white dark:bg-gray-900 p-4 shadow-md relative z-50">
@@ -21,7 +23,9 @@ export default function MobileNavbar() {
 
       {isOpen && (
         <div className="mt-4 flex flex-col space-y-2">
-          <Link to="/" onClick={() => setIsOpen(false)} className="text-gray-800 dark:text-gray-100">Hem</Link>
+          <Link to="/" onClick={() => setIsOpen(false)} className="text-gray-800 dark:text-gray-100">
+            Hem
+          </Link>
           <Link to="/login" onClick={() => setIsOpen(false)} className="text-gray-800 dark:text-gray-100">Logga in</Link>
           <Link to="/profile" onClick={() => setIsOpen(false)} className="text-gray-800 dark:text-gray-100">Profil</Link>
           <Link to="/cart" onClick={() => setIsOpen(false)} className="text-gray-800 dark:text-gray-100">Varukorg</Link>

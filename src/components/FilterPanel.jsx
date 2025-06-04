@@ -1,5 +1,5 @@
 import React from "react";
-import Dropdown from "./Dropdown";
+import Dropdown from "./form/Dropdown";
 
 export default function FilterPanel({ filters, setFilters }) {
   return (

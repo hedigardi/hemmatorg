@@ -8,7 +8,7 @@ export default function DishCard({ dish, onClick }) {
       className="cursor-pointer bg-white dark:bg-gray-800 rounded-xl shadow-md overflow-hidden hover:shadow-lg transition"
     >
       <img
-        src={dish.image}
+        src={dish.imageUrl || 'https://via.placeholder.com/300x160.png?text=Ingen+bild'} // Use imageUrl and a fallback
         alt={dish.title}
         className="w-full h-40 object-cover"
       />
