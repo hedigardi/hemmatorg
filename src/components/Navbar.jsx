@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { Menu, X, Sun, Moon } from "lucide-react";
+import { useAuth } from "../context/AuthContext";
 
 export default function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
@@ -8,6 +9,13 @@ export default function Navbar() {
     const stored = localStorage.getItem("theme");
     return stored === "dark" || (!stored && window.matchMedia("(prefers-color-scheme: dark)").matches);
   });
+  const { isAuthenticated, logout } = useAuth();
+    const navigate = useNavigate();
+
+    const handleLogout = () => {
+      logout();
+      navigate("/login");
+    };
   
   useEffect(() => {
     if (darkMode) {
@@ -45,7 +53,11 @@ export default function Navbar() {
             <Link to="/preview">Preview</Link>
             <Link to="/cart">Varukorg</Link>
             <Link to="/profile">Profil</Link>
-            <Link to="/login">Logga in</Link>
+            {isAuthenticated ? (
+                <button onClick={handleLogout} className="hover:underline">Logga ut</button>
+              ) : (
+                <Link to="/login">Logga in</Link>
+              )}
           </div>
 
           {/* Hamburger icon */}

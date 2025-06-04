@@ -1,13 +1,14 @@
-import { Routes, Route } from 'react-router-dom';
-import Home from './pages/Home';
-import DishDetails from './pages/DishDetails';
-import Login from './pages/Login';
-import Cart from './pages/Cart';
-import Profile from './pages/Profile';
-import SellerDashboard from './pages/SellerDashboard';
-import AddDish from './pages/AddDish';
-import OrderHistory from './pages/OrderHistory';
-import ComponentPreview from './pages/ComponentPreview';
+import { Routes, Route } from "react-router-dom";
+import Home from "./pages/Home";
+import DishDetails from "./pages/DishDetails";
+import Login from "./pages/Login";
+import Cart from "./pages/Cart";
+import Profile from "./pages/Profile";
+import SellerDashboard from "./pages/SellerDashboard";
+import AddDish from "./pages/AddDish";
+import OrderHistory from "./pages/OrderHistory";
+import ComponentPreview from "./pages/ComponentPreview";
+import ProtectedRoute from "./components/ProtectedRoute";
 
 export default function RoutesComponent() {
   return (
@@ -16,7 +17,14 @@ export default function RoutesComponent() {
       <Route path="/dish/:id" element={<DishDetails />} />
       <Route path="/login" element={<Login />} />
       <Route path="/cart" element={<Cart />} />
-      <Route path="/profile" element={<Profile />} />
+      <Route
+        path="/profile"
+        element={
+          <ProtectedRoute>
+            <Profile />
+          </ProtectedRoute>
+        }
+      />
       <Route path="/seller" element={<SellerDashboard />} />
       <Route path="/add" element={<AddDish />} />
       <Route path="/orders" element={<OrderHistory />} />
