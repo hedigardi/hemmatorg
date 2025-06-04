@@ -1,5 +1,5 @@
 // src/services/dishService.js
-import { collection, getDocs, getDoc, doc, query, orderBy } from "firebase/firestore";
+import { collection, getDocs, getDoc, doc, query, orderBy, where } from "firebase/firestore";
 import { db } from "../firebase/firebaseConfig";
 
 export async function getAllDishes() {
@@ -31,6 +31,22 @@ export async function getDishById(dishId) {
       }
     } catch (error) {
       console.error("Error fetching dish by ID:", error);
+      throw error;
+    }
+  }
+
+  export async function getDishesBySellerId(sellerId) {
+    try {
+      const dishesCollectionRef = collection(db, "dishes");
+      const q = query(
+        dishesCollectionRef,
+        where("sellerId", "==", sellerId),
+        orderBy("createdAt", "desc")
+      );
+      const querySnapshot = await getDocs(q);
+      return querySnapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() }));
+    } catch (error) {
+      console.error("Error fetching dishes by seller ID:", error);
       throw error;
     }
   }
