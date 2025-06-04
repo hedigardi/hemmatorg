@@ -2,6 +2,7 @@ import { Routes, Route } from "react-router-dom";
 import Home from "./pages/Home";
 import DishDetails from "./pages/DishDetails";
 import Login from "./pages/Login";
+import Register from "./pages/Register"; // Importera Register
 import Cart from "./pages/Cart";
 import Profile from "./pages/Profile";
 import SellerDashboard from "./pages/SellerDashboard";
@@ -19,6 +20,7 @@ export default function RoutesComponent() {
     <Routes>
       <Route path="/" element={<Home />} />
       <Route path="/dish/:id" element={<DishDetails />} />
+      <Route path="/register" element={<Register />} /> {/* Lägg till route för registrering */}
       <Route path="/login" element={<Login />} />
       <Route path="/cart" element={<Cart />} />
       <Route path="/checkout" element={

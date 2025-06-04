@@ -10,10 +10,11 @@ export default function Navbar() {
     const stored = localStorage.getItem("theme");
     return stored === "dark" || (!stored && window.matchMedia("(prefers-color-scheme: dark)").matches);
   });
-  const { isAuthenticated, logout } = useAuth();  const { totalItems } = useCart(); // Hämta totalItems från CartContext
-  const handleLogout = () => {
-
-    logout();
+  const { isAuthenticated, user, logout, loading: authLoading } = useAuth(); // Lägg till user och authLoading
+  const { totalItems } = useCart();
+  const navigate = useNavigate(); // Se till att navigate är definierad
+  const handleLogout = async () => {
+    await logout();
     navigate("/login");
   };
   
@@ -30,6 +31,10 @@ export default function Navbar() {
   const toggleDarkMode = () => {
     setDarkMode(prevMode => !prevMode);
   };
+
+  // Visa inte innehåll som beror på auth förrän auth-status är laddad
+  // Detta förhindrar "flimmer" mellan inloggat/utloggat läge.
+  if (authLoading) return null; // Eller en enkel laddningsindikator för navbaren
 
   return (
     <nav className="bg-orange-400 dark:bg-gray-900 text-white dark:text-gray-100 p-4">
@@ -63,7 +68,12 @@ export default function Navbar() {
               </>
             )}
             {isAuthenticated ? (
-              <button onClick={handleLogout} className="hover:underline">Logga ut</button>
+              <>
+                {user?.displayName && <span className="hidden md:inline">Välkommen, {user.displayName}!</span>}
+                <button onClick={handleLogout} className="hover:underline">
+                  Logga ut
+                </button>
+              </>
             ) : (
               <Link to="/login">Logga in</Link>
             )}
@@ -95,7 +105,12 @@ export default function Navbar() {
             </>
           )}
           {isAuthenticated ? (
-            <button onClick={handleLogout} className="hover:underline">Logga ut</button>
+            <>
+              {user?.displayName && <span className="md:hidden">Välkommen, {user.displayName}!</span>}
+              <button onClick={handleLogout} className="hover:underline text-left w-full">
+                Logga ut
+              </button>
+            </>
           ) : (
             <Link to="/login" onClick={() => setIsOpen(false)}>Logga in</Link>
           )}

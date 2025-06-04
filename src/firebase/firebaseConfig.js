@@ -1,6 +1,7 @@
 // src/firebase/firebaseConfig.js
 import { initializeApp } from "firebase/app";
 import { getFirestore } from "firebase/firestore";
+import { getAuth } from "firebase/auth"; // Importera getAuth
 import { getAnalytics } from "firebase/analytics";
 
 // 🔐 Ditt Firebase-konfigobjekt från Firebase Console
@@ -20,7 +21,7 @@ const analytics = getAnalytics(app);
 
 // 🔥 Exportera Firestore-instansen
 const db = getFirestore(app);
+// 🔥 Exportera Auth-instansen
+const auth = getAuth(app);
 
-export { db };
-
-
+export { db, auth }; // Exportera auth
