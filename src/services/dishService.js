@@ -1,5 +1,5 @@
 // src/services/dishService.js
-import { collection, getDocs, getDoc, doc, query, orderBy, where } from "firebase/firestore";
+import { collection, getDocs, getDoc, doc, query, orderBy, where, deleteDoc, updateDoc } from "firebase/firestore";
 import { db } from "../firebase/firebaseConfig";
 
 export async function getAllDishes() {
@@ -18,6 +18,27 @@ export async function getAllDishes() {
   }
 }
 
+export async function deleteDishFromFirestore(dishId) {
+  try {
+    const dishRef = doc(db, "dishes", dishId);
+    await deleteDoc(dishRef);
+    console.log(`Dish with ID: ${dishId} successfully deleted.`);
+  } catch (error) {
+    console.error("Error deleting dish:", error);
+    throw error;
+  }
+}
+
+export async function updateDishInFirestore(dishId, dishData) {
+  try {
+    const dishRef = doc(db, "dishes", dishId);
+    await updateDoc(dishRef, dishData); // dishData should not include createdAt or sellerId if they are not changing
+    console.log(`Dish with ID: ${dishId} successfully updated.`);
+  } catch (error) {
+    console.error("Error updating dish:", error);
+    throw error;
+  }
+}
 
 export async function getDishById(dishId) {
     try {

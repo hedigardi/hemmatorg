@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom"; // Importera useNavigate
 import { useAuth } from "../context/AuthContext";
-import { getDishesBySellerId } from "../services/dishService";
+import { getDishesBySellerId, deleteDishFromFirestore } from "../services/dishService";
 import DishCard from "../components/DishCard"; // Importera DishCard
 
 export default function SellerDashboard() {
@@ -9,6 +9,7 @@ export default function SellerDashboard() {
   const [sellerDishes, setSellerDishes] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const navigate = useNavigate(); // Hook för navigering
 
   useEffect(() => {
     const fetchSellerDishes = async () => {
@@ -39,6 +40,29 @@ export default function SellerDashboard() {
   if (loading) return <p className="p-4 text-center">Laddar dina maträtter...</p>;
   if (error) return <p className="p-4 text-center text-red-500">{error}</p>;
 
+  const handleEditDish = (dishId) => {
+    navigate(`/seller/edit-dish/${dishId}`);
+  };
+
+  const handleDeleteDish = async (dishId, dishTitle) => {
+    if (window.confirm(`Är du säker på att du vill ta bort rätten "${dishTitle}"?`)) {
+      try {
+        await deleteDishFromFirestore(dishId);
+        setSellerDishes(prevDishes => prevDishes.filter(dish => dish.id !== dishId));
+        // Kanske visa en notifikation om lyckad borttagning
+      } catch (err) {
+        console.error("Failed to delete dish:", err);
+        setError(`Kunde inte ta bort rätten "${dishTitle}". Försök igen.`);
+        // Återställ felet efter en stund om du vill
+        setTimeout(() => setError(null), 5000);
+      }
+    }
+  };
+
+  const handleCardClick = (dishId) => {
+    navigate(`/dish/${dishId}`); // Navigera till den vanliga detaljsidan
+  };
+
   return (
     <div className="p-4">
       <h1 className="text-2xl font-bold mb-4">Säljarpanel</h1>
@@ -66,7 +90,10 @@ export default function SellerDashboard() {
             <DishCard
               key={dish.id}
               dish={dish}
-              // onClick={() => navigate(`/dish/${dish.id}`)} // Kan leda till detaljsida eller redigeringsvy
+              onClick={() => handleCardClick(dish.id)} // Klick på kortet leder till detaljsida
+              showAdminControls={true}
+              onEdit={() => handleEditDish(dish.id)}
+              onDelete={() => handleDeleteDish(dish.id, dish.title)}
             />
           ))}
         </div>

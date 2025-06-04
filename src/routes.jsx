@@ -11,6 +11,7 @@ import ComponentPreview from "./pages/ComponentPreview";
 import CheckoutPage from "./pages/CheckoutPage"; // Ny import
 import OrderConfirmationPage from "./pages/OrderConfirmationPage"; // Ny import
 import SellerOrdersPage from "./pages/SellerOrdersPage"; // Ny import
+import EditDishPage from "./pages/EditDishPage"; // Ny import
 import ProtectedRoute from "./components/ProtectedRoute";
 
 export default function RoutesComponent() {
@@ -48,6 +49,12 @@ export default function RoutesComponent() {
         path="/seller/orders" // Ny route för säljarordrar
         element={
           <ProtectedRoute><SellerOrdersPage /></ProtectedRoute>
+        }
+      />
+      <Route
+        path="/seller/edit-dish/:id" // Ny route för att redigera maträtt
+        element={
+          <ProtectedRoute><EditDishPage /></ProtectedRoute>
         }
       />
       <Route
