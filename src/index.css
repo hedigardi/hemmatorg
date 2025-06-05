@@ -1,14 +1,13 @@
-@import "tailwindcss";
-
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+/* /home/user/hemmatorg/src/index.css */
+@import "tailwindcss/base";
+@import "tailwindcss/components";
+@import "tailwindcss/utilities";
 
 @layer base {
   body {
-    @apply bg-white text-gray-800; /* Standard ljus tema för body */
+    @apply bg-pageTheme-light text-gray-800; /* Använd din anpassade beige bakgrund */
   }
   html.dark body {
-    @apply bg-gray-900 text-gray-100; /* Mörkt tema för body, matcha App.jsx eller välj egna */
+    @apply bg-gray-900 text-gray-100; /* Standard mörkt tema, kan anpassas senare */
   }
 }

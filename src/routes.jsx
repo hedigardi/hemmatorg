@@ -14,6 +14,10 @@ import OrderConfirmationPage from "./pages/OrderConfirmationPage"; // Ny import
 import SellerOrdersPage from "./pages/SellerOrdersPage"; // Ny import
 import EditDishPage from "./pages/EditDishPage"; // Ny import
 import ProtectedRoute from "./components/ProtectedRoute";
+// Importera nya sidor för footern
+import PrivacyPolicy from "./pages/PrivacyPolicy"; // Antag att du skapar denna fil
+import TermsOfService from "./pages/TermsOfService"; // Antag att du skapar denna fil
+import ContactPage from "./pages/ContactPage"; // Antag att du skapar denna fil
 
 export default function RoutesComponent() {
   return (
@@ -69,6 +73,10 @@ export default function RoutesComponent() {
       />
       <Route path="/orders" element={<OrderHistory />} />
       <Route path="/preview" element={<ComponentPreview />} />
+      {/* Routes för footer-länkar */}
+      <Route path="/integritetspolicy" element={<PrivacyPolicy />} />
+      <Route path="/anvandarvillkor" element={<TermsOfService />} />
+      <Route path="/kontakt" element={<ContactPage />} />
     </Routes>
   );
 }

@@ -8,7 +8,7 @@ export default function RatingStars({ rating = 0 }) {
         <Star
           key={i}
           size={20}
-          className={i < rating ? "text-yellow-400 fill-yellow-400" : "text-gray-300"}
+          className={i < rating ? "text-accent-DEFAULT fill-accent-DEFAULT" : "text-gray-300 dark:text-gray-600"}
           strokeWidth={1.5}
         />
       ))}

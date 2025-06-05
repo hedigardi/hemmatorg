@@ -7,8 +7,9 @@ import { useCart } from "../context/CartContext"; // Importera useCart
 export default function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
   const [darkMode, setDarkMode] = useState(() => {
-    const stored = localStorage.getItem("theme");
-    return stored === "dark" || (!stored && window.matchMedia("(prefers-color-scheme: dark)").matches);
+    const storedTheme = localStorage.getItem("theme");
+    // Starta i ljust läge om inget sparat tema finns, annars använd sparat tema
+    return storedTheme === "dark"; // Starta i mörkt endast om localStorage explicit säger "dark"
   });
   const { isAuthenticated, user, logout, loading: authLoading } = useAuth(); // Lägg till user och authLoading
   const { totalItems } = useCart();
@@ -37,16 +38,16 @@ export default function Navbar() {
   if (authLoading) return null; // Eller en enkel laddningsindikator för navbaren
 
   return (
-    <nav className="bg-orange-400 dark:bg-gray-900 text-white dark:text-gray-100 p-4">
-      <div className="flex justify-between items-center">
+    <nav className="bg-pageTheme-light dark:bg-gray-800 text-gray-700 dark:text-gray-200 shadow-md"> {/* Borttagen border-b, förlitar sig på shadow-md för separation */}
+      <div className="container mx-auto px-6 py-3 flex justify-between items-center"> {/* Increased px */}
         {/* Left side: logo + toggle */}
         <div className="flex items-center gap-4">
-          <Link to="/" className="text-lg font-bold">HemmaTorg</Link>
+        <Link to="/" className="text-lg font-bold text-primary-DEFAULT">HemmaTorg</Link> {/* Logotyp i primärfärg */}
           <button
             onClick={toggleDarkMode}
-            className="p-1 rounded hover:bg-white/10"
+            className="p-1 rounded hover:bg-gray-200 dark:hover:bg-gray-700"
             aria-label="Toggle dark mode"
-          >
+          > {/* Subtle hover for toggle */}
             {darkMode ? <Sun size={20} /> : <Moon size={20} />}
           </button>
         </div>
@@ -54,28 +55,28 @@ export default function Navbar() {
         {/* Right side: links + hamburger */}
         <div className="flex items-center gap-4">
           {/* Desktop links */}
-          <div className="hidden md:flex gap-4">
-            <Link to="/preview">Preview</Link>
-            <Link to="/cart" className="flex items-center gap-1">
+          <div className="hidden md:flex items-center gap-3"> {/* Adjusted gap */}
+            <Link to="/preview" className="px-3 py-2 rounded-md hover:text-primary-dark transition-colors">Preview</Link> {/* Justerad hover */}
+            <Link to="/cart" className="flex items-center gap-1 px-3 py-2 rounded-md hover:text-primary-dark transition-colors">
               Varukorg {totalItems > 0 && <span className="bg-red-500 text-white text-xs font-bold px-2 py-0.5 rounded-full">{totalItems}</span>}
             </Link>
             {isAuthenticated && (
               <>
-                <Link to="/profile">Profil</Link>
-                <Link to="/orders">Orderhistorik</Link>
-                <Link to="/seller">Säljardashboard</Link>
-                <Link to="/add">Lägg till maträtt</Link>
+                <Link to="/profile" className="px-3 py-2 rounded-md hover:text-primary-dark transition-colors">Profil</Link>
+                <Link to="/orders" className="px-3 py-2 rounded-md hover:text-primary-dark transition-colors">Orderhistorik</Link>
+                <Link to="/seller" className="px-3 py-2 rounded-md hover:text-primary-dark transition-colors">Säljardashboard</Link>
+                <Link to="/add" className="px-3 py-2 rounded-md hover:text-primary-dark transition-colors">Lägg till maträtt</Link>
               </>
             )}
             {isAuthenticated ? (
               <>
                 {user?.displayName && <span className="hidden md:inline">Välkommen, {user.displayName}!</span>}
-                <button onClick={handleLogout} className="hover:underline">
+                <button onClick={handleLogout} className="px-3 py-2 rounded-full text-primary-DEFAULT hover:bg-primary-light hover:text-white transition-colors"> {/* Logout som en textknapp med primärfärg */}
                   Logga ut
                 </button>
               </>
             ) : (
-              <Link to="/login">Logga in</Link>
+              <Link to="/login" className="px-3 py-2 rounded-md bg-primary-DEFAULT text-white hover:bg-primary-dark transition-colors">Logga in</Link> /* Login as primary button */
             )}
           </div>
 
@@ -92,28 +93,30 @@ export default function Navbar() {
 
       {/* Mobile menu */}
       {isOpen && (
-        <div className="flex flex-col gap-2 mt-2 md:hidden">
-          <Link to="/preview" onClick={() => setIsOpen(false)}>Preview</Link>
-          <Link to="/cart" onClick={() => setIsOpen(false)} className="flex items-center gap-1">
-            Varukorg {totalItems > 0 && <span className="bg-red-500 text-white text-xs font-bold px-2 py-0.5 rounded-full">{totalItems}</span>}
-          </Link>
-          {isAuthenticated && (
-            <>
-              <Link to="/profile" onClick={() => setIsOpen(false)}>Profil</Link>
-              <Link to="/seller" onClick={() => setIsOpen(false)}>Säljardashboard</Link>
-              <Link to="/add" onClick={() => setIsOpen(false)}>Lägg till maträtt</Link>
-            </>
-          )}
-          {isAuthenticated ? (
-            <>
-              {user?.displayName && <span className="md:hidden">Välkommen, {user.displayName}!</span>}
-              <button onClick={handleLogout} className="hover:underline text-left w-full">
-                Logga ut
-              </button>
-            </>
-          ) : (
-            <Link to="/login" onClick={() => setIsOpen(false)}>Logga in</Link>
-          )}
+        <div className="md:hidden border-t border-gray-200 dark:border-gray-700"> {/* Lättare border-top för mobilmenyn, eller kan också tas bort om skuggan från nav är tillräcklig */}
+          <div className="container mx-auto px-6 py-2 flex flex-col gap-2"> {/* Container for mobile menu items, increased px */}
+            <Link to="/preview" onClick={() => setIsOpen(false)} className="block px-3 py-2 rounded-md hover:text-primary-dark transition-colors">Preview</Link>
+            <Link to="/cart" onClick={() => setIsOpen(false)} className="flex items-center gap-1 px-3 py-2 rounded-md hover:text-primary-dark transition-colors">
+              Varukorg {totalItems > 0 && <span className="bg-red-500 text-white text-xs font-bold px-2 py-0.5 rounded-full">{totalItems}</span>}
+            </Link>
+            {isAuthenticated && (
+              <>
+                <Link to="/profile" onClick={() => setIsOpen(false)} className="block px-3 py-2 rounded-md hover:text-primary-dark transition-colors">Profil</Link>
+                <Link to="/seller" onClick={() => setIsOpen(false)} className="block px-3 py-2 rounded-md hover:text-primary-dark transition-colors">Säljardashboard</Link>
+                <Link to="/add" onClick={() => setIsOpen(false)} className="block px-3 py-2 rounded-md hover:text-primary-dark transition-colors">Lägg till maträtt</Link>
+              </>
+            )}
+            {isAuthenticated ? (
+              <>
+                {user?.displayName && <span className="block px-3 py-2">Välkommen, {user.displayName}!</span>}
+                <button onClick={handleLogout} className="block w-full text-left px-3 py-2 rounded-full text-primary-DEFAULT hover:bg-primary-light hover:text-white transition-colors">
+                  Logga ut
+                </button>
+              </>
+            ) : (
+              <Link to="/login" onClick={() => setIsOpen(false)} className="block px-3 py-2 rounded-md bg-primary-DEFAULT text-white hover:bg-primary-dark transition-colors">Logga in</Link>
+            )}
+          </div>
         </div>
       )}
     </nav>
