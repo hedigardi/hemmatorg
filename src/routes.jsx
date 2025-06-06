@@ -18,6 +18,7 @@ import ProtectedRoute from "./components/ProtectedRoute";
 import PrivacyPolicy from "./pages/PrivacyPolicy"; // Antag att du skapar denna fil
 import TermsOfService from "./pages/TermsOfService"; // Antag att du skapar denna fil
 import ContactPage from "./pages/ContactPage"; // Antag att du skapar denna fil
+import HowItWorks from "./pages/HowItWorks"; // Importera HowItWorks
 
 export default function RoutesComponent() {
   return (
@@ -73,6 +74,7 @@ export default function RoutesComponent() {
       />
       <Route path="/orders" element={<OrderHistory />} />
       <Route path="/preview" element={<ComponentPreview />} />
+      <Route path="/how-it-works" element={<HowItWorks />} /> {/* Lägg till route för Så funkar det */}
       {/* Routes för footer-länkar */}
       <Route path="/integritetspolicy" element={<PrivacyPolicy />} />
       <Route path="/anvandarvillkor" element={<TermsOfService />} />

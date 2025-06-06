@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { Menu, X, Sun, Moon } from "lucide-react";
+import { Menu, X, Sun, Moon, Home, Info, LogIn, LogOut, ShoppingCart, UserCircle, ListOrdered, UtensilsCrossed, PlusCircle } from 'lucide-react'; // Added ListOrdered, PlusCircle
 import { useAuth } from "../context/AuthContext";
 import { useCart } from "../context/CartContext"; // Importera useCart
 
@@ -38,11 +38,11 @@ export default function Navbar() {
   if (authLoading) return null; // Eller en enkel laddningsindikator för navbaren
 
   return (
-    <nav className="bg-pageTheme-light dark:bg-gray-800 text-gray-700 dark:text-gray-200 shadow-md"> {/* Borttagen border-b, förlitar sig på shadow-md för separation */}
+    <nav className="bg-pageTheme-light dark:bg-gray-800 text-gray-700 dark:text-gray-200 shadow-md sticky top-0 z-50"> {/* Added sticky, top-0, z-50 */}
       <div className="container mx-auto px-6 py-3 flex justify-between items-center"> {/* Increased px */}
         {/* Left side: logo + toggle */}
         <div className="flex items-center gap-4">
-        <Link to="/" className="text-lg font-bold text-primary-DEFAULT">HemmaTorg</Link> {/* Logotyp i primärfärg */}
+        <Link to="/" className="text-lg font-bold text-primary-main font-headline">HemmaTorg</Link> {/* Använder primary-main och font-headline */}
           <button
             onClick={toggleDarkMode}
             className="p-1 rounded hover:bg-gray-200 dark:hover:bg-gray-700"
@@ -55,28 +55,62 @@ export default function Navbar() {
         {/* Right side: links + hamburger */}
         <div className="flex items-center gap-4">
           {/* Desktop links */}
-          <div className="hidden md:flex items-center gap-3"> {/* Adjusted gap */}
-            <Link to="/preview" className="px-3 py-2 rounded-md hover:text-primary-dark transition-colors">Preview</Link> {/* Justerad hover */}
-            <Link to="/cart" className="flex items-center gap-1 px-3 py-2 rounded-md hover:text-primary-dark transition-colors">
-              Varukorg {totalItems > 0 && <span className="bg-red-500 text-white text-xs font-bold px-2 py-0.5 rounded-full">{totalItems}</span>}
-            </Link>
-            {isAuthenticated && (
+          <div className="hidden md:flex items-center gap-3">
+            {!isAuthenticated ? (
               <>
-                <Link to="/profile" className="px-3 py-2 rounded-md hover:text-primary-dark transition-colors">Profil</Link>
-                <Link to="/orders" className="px-3 py-2 rounded-md hover:text-primary-dark transition-colors">Orderhistorik</Link>
-                <Link to="/seller" className="px-3 py-2 rounded-md hover:text-primary-dark transition-colors">Säljardashboard</Link>
-                <Link to="/add" className="px-3 py-2 rounded-md hover:text-primary-dark transition-colors">Lägg till maträtt</Link>
-              </>
-            )}
-            {isAuthenticated ? (
-              <>
-                {user?.displayName && <span className="hidden md:inline">Välkommen, {user.displayName}!</span>}
-                <button onClick={handleLogout} className="px-3 py-2 rounded-full text-primary-DEFAULT hover:bg-primary-light hover:text-white transition-colors"> {/* Logout som en textknapp med primärfärg */}
-                  Logga ut
-                </button>
+                <Link to="/" className="flex items-center gap-1 px-4 py-2 rounded-full bg-accent-DEFAULT text-textColors-onAccent dark:text-white hover:bg-accent-light dark:hover:text-textColors-onAccent transition-colors text-sm font-semibold">
+                  <Home className="h-4 w-4" /> Hem
+                </Link>
+                <Link to="/how-it-works" className="flex items-center gap-1 px-4 py-2 rounded-full bg-accent-DEFAULT text-textColors-onAccent dark:text-white hover:bg-accent-light dark:hover:text-textColors-onAccent transition-colors text-sm font-semibold">
+                  <Info className="h-4 w-4" /> Så funkar det
+                </Link>
+                <Link to="/login" className="flex items-center gap-1 px-4 py-2 rounded-full bg-accent-DEFAULT text-textColors-onAccent dark:text-white hover:bg-accent-light dark:hover:text-textColors-onAccent transition-colors text-sm font-semibold">
+                  <LogIn className="h-4 w-4" /> Logga in
+                </Link>
+                <Link to="/cart" className="flex items-center gap-1 px-4 py-2 rounded-full bg-accent-light text-textColors-onAccent dark:text-textColors-onAccent hover:bg-accent-light transition-colors text-sm font-semibold">
+                  <ShoppingCart className="h-4 w-4" /> Varukorg {totalItems > 0 && <span className="bg-red-500 text-white text-xs font-bold px-1.5 py-0.5 rounded-full">{totalItems}</span>}
+                </Link>
               </>
             ) : (
-              <Link to="/login" className="px-3 py-2 rounded-md bg-primary-DEFAULT text-white hover:bg-primary-dark transition-colors">Logga in</Link> /* Login as primary button */
+              <>
+                {/* Inloggade användarens standardlänkar */}
+                <Link to="/" className="flex items-center gap-1 px-3 py-2 rounded-md hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors">
+                  <Home className="h-4 w-4" /> Hem
+                </Link>
+                <Link to="/how-it-works" className="flex items-center gap-1 px-3 py-2 rounded-md hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors">
+                  <Info className="h-4 w-4" /> Så funkar det
+                </Link>
+                {/* Konsekvent Varukorg-stil */}
+                <Link to="/cart" className="flex items-center gap-1 px-4 py-2 rounded-full bg-accent-light text-textColors-onAccent dark:text-textColors-onAccent hover:bg-accent-light transition-colors text-sm font-semibold">
+                  <ShoppingCart className="h-4 w-4" /> Varukorg {totalItems > 0 && <span className="bg-red-500 text-white text-xs font-bold px-1.5 py-0.5 rounded-full">{totalItems}</span>}
+                </Link>
+                {/* Profil-länk med outline-stil */}
+                <Link 
+                  to="/profile" 
+                  className="flex items-center gap-1 px-3 py-2 rounded-full border border-primary-main text-primary-main hover:bg-primary-main hover:text-white dark:border-primary-light dark:text-primary-light dark:hover:bg-primary-light dark:hover:text-gray-900 transition-colors text-sm font-semibold"
+                >
+                  <UserCircle className="h-4 w-4" /> Profil
+                </Link>
+                <Link to="/orders" className="flex items-center gap-1 px-3 py-2 rounded-md hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors">
+                  <ListOrdered className="h-4 w-4" /> Orderhistorik
+                </Link>
+                {/* Säljarspecifika länkar, kan villkoras om du har rollhantering senare */}
+                <Link to="/seller" className="flex items-center gap-1 px-3 py-2 rounded-md hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors">
+                  <UtensilsCrossed className="h-4 w-4" /> Säljpanel
+                </Link>
+                <Link to="/add" className="flex items-center gap-1 px-3 py-2 rounded-md hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors">
+                  <PlusCircle className="h-4 w-4" /> Lägg till rätt
+                </Link>
+                
+                {user?.displayName && <span className="hidden md:inline">Välkommen, {user.displayName}!</span>}
+                {/* Logga ut-knapp med ghost-stil */}
+                <button 
+                  onClick={handleLogout} 
+                  className="flex items-center gap-1 px-3 py-2 rounded-md hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors"
+                >
+                  <LogOut className="h-4 w-4" /> Logga ut
+                </button>
+              </>
             )}
           </div>
 
@@ -94,27 +128,55 @@ export default function Navbar() {
       {/* Mobile menu */}
       {isOpen && (
         <div className="md:hidden border-t border-gray-200 dark:border-gray-700"> {/* Lättare border-top för mobilmenyn, eller kan också tas bort om skuggan från nav är tillräcklig */}
-          <div className="container mx-auto px-6 py-2 flex flex-col gap-2"> {/* Container for mobile menu items, increased px */}
-            <Link to="/preview" onClick={() => setIsOpen(false)} className="block px-3 py-2 rounded-md hover:text-primary-dark transition-colors">Preview</Link>
-            <Link to="/cart" onClick={() => setIsOpen(false)} className="flex items-center gap-1 px-3 py-2 rounded-md hover:text-primary-dark transition-colors">
-              Varukorg {totalItems > 0 && <span className="bg-red-500 text-white text-xs font-bold px-2 py-0.5 rounded-full">{totalItems}</span>}
-            </Link>
-            {isAuthenticated && (
+          <div className="container mx-auto px-6 py-3 flex flex-col gap-3 text-gray-700 dark:text-gray-200"> {/* Container for mobile menu items, increased px */}
+            {!isAuthenticated ? (
               <>
-                <Link to="/profile" onClick={() => setIsOpen(false)} className="block px-3 py-2 rounded-md hover:text-primary-dark transition-colors">Profil</Link>
-                <Link to="/seller" onClick={() => setIsOpen(false)} className="block px-3 py-2 rounded-md hover:text-primary-dark transition-colors">Säljardashboard</Link>
-                <Link to="/add" onClick={() => setIsOpen(false)} className="block px-3 py-2 rounded-md hover:text-primary-dark transition-colors">Lägg till maträtt</Link>
-              </>
-            )}
-            {isAuthenticated ? (
-              <>
-                {user?.displayName && <span className="block px-3 py-2">Välkommen, {user.displayName}!</span>}
-                <button onClick={handleLogout} className="block w-full text-left px-3 py-2 rounded-full text-primary-DEFAULT hover:bg-primary-light hover:text-white transition-colors">
-                  Logga ut
-                </button>
+                <Link to="/" onClick={() => setIsOpen(false)} className="flex items-center gap-2 block w-full text-left px-4 py-2 rounded-full bg-accent-DEFAULT text-textColors-onAccent dark:text-white hover:bg-accent-light dark:hover:text-textColors-onAccent transition-colors text-sm font-semibold">
+                  <Home className="h-5 w-5" /> Hem
+                </Link>
+                <Link to="/how-it-works" onClick={() => setIsOpen(false)} className="flex items-center gap-2 block w-full text-left px-4 py-2 rounded-full bg-accent-DEFAULT text-textColors-onAccent dark:text-white hover:bg-accent-light dark:hover:text-textColors-onAccent transition-colors text-sm font-semibold">
+                  <Info className="h-5 w-5" /> Så funkar det
+                </Link>
+                <Link to="/login" onClick={() => setIsOpen(false)} className="flex items-center gap-2 block w-full text-left px-4 py-2 rounded-full bg-accent-DEFAULT text-textColors-onAccent dark:text-white hover:bg-accent-light dark:hover:text-textColors-onAccent transition-colors text-sm font-semibold">
+                  <LogIn className="h-5 w-5" /> Logga in
+                </Link>
+                <Link to="/cart" onClick={() => setIsOpen(false)} className="flex items-center gap-2 block w-full text-left px-4 py-2 rounded-full bg-accent-light text-textColors-onAccent dark:text-textColors-onAccent hover:bg-accent-light transition-colors text-sm font-semibold">
+                  <ShoppingCart className="h-5 w-5" /> Varukorg {totalItems > 0 && <span className="bg-red-500 text-white text-xs font-bold px-1.5 py-0.5 rounded-full">{totalItems}</span>}
+                </Link>
               </>
             ) : (
-              <Link to="/login" onClick={() => setIsOpen(false)} className="block px-3 py-2 rounded-md bg-primary-DEFAULT text-white hover:bg-primary-dark transition-colors">Logga in</Link>
+              <>
+                <Link to="/" onClick={() => setIsOpen(false)} className="flex items-center gap-2 block px-3 py-2 rounded-md hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors">
+                  <Home className="h-5 w-5" /> Hem
+                </Link>
+                <Link to="/how-it-works" onClick={() => setIsOpen(false)} className="flex items-center gap-2 block px-3 py-2 rounded-md hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors">
+                  <Info className="h-5 w-5" /> Så funkar det
+                </Link>
+                {/* Konsekvent Varukorg-stil för mobil */}
+                <Link to="/cart" onClick={() => setIsOpen(false)} className="flex items-center gap-2 block w-full text-left px-4 py-2 rounded-full bg-accent-light text-textColors-onAccent dark:text-textColors-onAccent hover:bg-accent-light transition-colors text-sm font-semibold">
+                  <ShoppingCart className="h-5 w-5" /> Varukorg {totalItems > 0 && <span className="bg-red-500 text-white text-xs font-bold px-1.5 py-0.5 rounded-full">{totalItems}</span>}
+                </Link>
+                <Link to="/profile" onClick={() => setIsOpen(false)} className="flex items-center gap-2 block px-3 py-2 rounded-md hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors">
+                  <UserCircle className="h-5 w-5" /> Profil
+                </Link>
+                <Link to="/orders" onClick={() => setIsOpen(false)} className="flex items-center gap-2 block px-3 py-2 rounded-md hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors">
+                  <ListOrdered className="h-5 w-5" /> Orderhistorik
+                </Link>
+                <Link to="/seller" onClick={() => setIsOpen(false)} className="flex items-center gap-2 block px-3 py-2 rounded-md hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors">
+                  <UtensilsCrossed className="h-5 w-5" /> Säljpanel
+                </Link>
+                <Link to="/add" onClick={() => setIsOpen(false)} className="flex items-center gap-2 block px-3 py-2 rounded-md hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors">
+                  <PlusCircle className="h-5 w-5" /> Lägg till rätt
+                </Link>
+                {user?.displayName && <span className="block px-3 py-2">Välkommen, {user.displayName}!</span>}
+                {/* Logga ut-knapp med ghost-stil för mobil */}
+                <button 
+                  onClick={handleLogout} 
+                  className="flex items-center gap-2 w-full text-left px-3 py-2 rounded-md hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors"
+                >
+                  <LogOut className="h-5 w-5" /> Logga ut
+                </button>
+              </>
             )}
           </div>
         </div>

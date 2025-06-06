@@ -38,11 +38,11 @@ export default function Home() {
       {/* Hero Section - Bakgrunden är redan vit/ljusgrå från App.jsx eller body, så ingen extra bg här behövs om det är designen */}
       <section className="bg-pageTheme-hero dark:bg-pageTheme-heroDark py-16 md:py-24 text-center shadow-sm"> {/* Uppdaterad mörk bakgrund för hero */}
         <div className="container mx-auto px-6">
-          <h1 className="text-4xl md:text-5xl font-bold text-gray-800 dark:text-white mb-6">
-            Upptäck HemmaLagat!
+          <h1 className="text-4xl md:text-5xl font-bold text-primary-main dark:text-primary-light mb-6">
+            Välkommen till HemmaTorg!
           </h1>
           <p className="text-lg md:text-xl text-gray-600 dark:text-gray-300 mb-10 max-w-2xl mx-auto">
-            Din marknadsplats för utsökt hemlagad mat från lokala kockar.
+          Upptäck utsökt hemlagad mat från dina grannar, eller dela med dig av dina egna kulinariska skapelser.
           </p> {/* Knappen använder redan primärfärgen */}
           <Button variant="primary" onClick={() => document.getElementById('dishes-section')?.scrollIntoView({ behavior: 'smooth' })}>
             Utforska alla rätter
@@ -54,7 +54,7 @@ export default function Home() {
       <section id="dishes-section" className="py-12 md:py-16 bg-pageTheme-light dark:bg-gray-900"> {/* Huvudsektionens bakgrund */}
         <div className="container mx-auto px-6">
         <h2 className="text-3xl md:text-4xl font-bold mb-10 text-center text-gray-800 dark:text-white">
-          Populära Rätter
+          
         </h2>
       {/* <FilterPanel filters={filters} setFilters={setFilters} /> // Kan läggas till senare */}
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">

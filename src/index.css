@@ -5,9 +5,14 @@
 
 @layer base {
   body {
-    @apply bg-pageTheme-light text-gray-800; /* Använd din anpassade beige bakgrund */
+    @apply bg-pageTheme-light text-gray-800 font-body; /* Applicera font-body här */
   }
   html.dark body {
-    @apply bg-gray-900 text-gray-100; /* Standard mörkt tema, kan anpassas senare */
+    @apply bg-gray-900 text-gray-100 font-body; /* Applicera font-body även för mörkt tema */
+  }
+
+  /* Valfritt: Applicera font-headline globalt på rubriker */
+  h1, h2, h3, h4, h5, h6 {
+    @apply font-headline;
   }
 }
