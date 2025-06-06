@@ -11,10 +11,10 @@ export default function Navbar() {
     // Starta i ljust läge om inget sparat tema finns, annars använd sparat tema
     return storedTheme === "dark"; // Starta i mörkt endast om localStorage explicit säger "dark"
   });
-  const { isAuthenticated, user, logout, loading: authLoading } = useAuth();
-  const { totalItems } = useCart();
+  const { isAuthenticated, user, logout, loading: authLoading } = useAuth(); 
+  const { uniqueItemsCount } = useCart(); // Flytta useCart() hit, FÖRE villkorlig logik
   const navigate = useNavigate(); // Se till att navigate är definierad
-  const handleLogout = async () => {
+  const handleLogout = async () => { 
     await logout();
     navigate("/login");
   };
@@ -36,10 +36,8 @@ export default function Navbar() {
   // Visa inte innehåll som beror på auth förrän auth-status är laddad
   // Detta förhindrar "flimmer" mellan inloggat/utloggat läge.
   if (authLoading) return null; // Eller en enkel laddningsindikator för navbaren
-  const { uniqueItemsCount } = useCart(); // Hämta uniqueItemsCount
-
   return (
-    <nav className="bg-pageTheme-light dark:bg-gray-800 text-gray-700 dark:text-gray-200 shadow-md sticky top-0 z-50"> {/* Added sticky, top-0, z-50 */}
+    <nav className="bg-pageTheme-light dark:bg-gray-800 text-gray-700 dark:text-gray-200 shadow-md sticky top-0 z-50 border-b-2 border-primary-main dark:border-gray-700"> {/* Changed light theme border color to primary-main */}
       <div className="container mx-auto px-6 py-3 flex justify-between items-center"> {/* Increased px */}
         {/* Left side: logo + toggle */}
         <div className="flex items-center gap-4">

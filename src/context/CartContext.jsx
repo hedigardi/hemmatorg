@@ -4,25 +4,35 @@ import { createContext, useContext, useState, useEffect } from 'react';
 const CartContext = createContext();
 
 export function CartProvider({ children }) {
-  // State för varukorgen. Använd en array av objekt, t.ex. { dishId: '...', quantity: N, dish: { ...dishData } }
-  const [cartItems, setCartItems] = useState([]);
-
-  // Ladda varukorgen från localStorage vid start
-  useEffect(() => {
+  // Initiera state direkt från localStorage
+  const [cartItems, setCartItems] = useState(() => {
+    console.log("CartContext: Initierar cartItems state från localStorage.");
     const storedCart = localStorage.getItem('hemmatorg_cart');
+    console.log("CartContext: Hämtad varukorg från localStorage:", storedCart);
     if (storedCart) {
       try {
-        setCartItems(JSON.parse(storedCart));
+        const parsedCart = JSON.parse(storedCart);
+        console.log("CartContext: Parsad varukorg vid init:", parsedCart);
+        return parsedCart; // Returnera den parsade varukorgen som initialt state
       } catch (error) {
-        console.error("Failed to parse cart from localStorage:", error);
+        console.error("CartContext: Misslyckades att parsa varukorg från localStorage vid init:", error);
         localStorage.removeItem('hemmatorg_cart'); // Clear invalid data
+        return []; // Returnera tom array vid fel
       }
+    } else {
+      console.log("CartContext: Ingen varukorg hittades i localStorage vid init, initierar med tom array.");
+      return []; // Returnera tom array om ingen varukorg finns
     }
-  }, []);
+  });
 
   // Spara varukorgen till localStorage när den ändras
   useEffect(() => {
+    // Undvik att spara en initial tom array om den inte redan har laddats
+    // Detta kan vara relevant om det finns en race condition, men oftast inte nödvändigt med nuvarande setup.
+    // if (cartItems.length > 0 || localStorage.getItem('hemmatorg_cart')) {
+    console.log("CartContext: Sparar varukorg till localStorage. Aktuella varor:", cartItems);
     localStorage.setItem('hemmatorg_cart', JSON.stringify(cartItems));
+    // }
   }, [cartItems]);
 
   // Funktion för att lägga till en rätt i varukorgen
