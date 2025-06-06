@@ -31,6 +31,10 @@ export const theme = {
             textColors: { // Ny kategori för specifika textfärger
                 onAccent: '#281d17', // Mörk textfärg för accentbakgrund
             },
+            destructive: {
+                DEFAULT: '#ef4444', // Tailwinds red-500
+                hover: '#d73c3c'    // En något mörkare röd för hover, eller behåll samma om du föredrar det
+            },
             simplebeige: '#efe4de', // Ny, enkel definition för testning
             // Tailwinds standardfärger (gray, blue, red, etc.) kommer fortfarande att finnas tillgängliga
             // Om du vill anpassa t.ex. gray, kan du göra det här:

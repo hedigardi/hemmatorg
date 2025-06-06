@@ -82,11 +82,14 @@ export function CartProvider({ children }) {
     setCartItems([]);
   };
 
-  // Beräkna totalt antal varor i varukorgen
+  // Beräkna totalt antal varor (summan av alla kvantiteter)
   const totalItems = cartItems.reduce((total, item) => total + item.quantity, 0);
 
+  // Beräkna antalet unika maträtter (antalet objekt i arrayen)
+  const uniqueItemsCount = cartItems.length;
+
   return (
-    <CartContext.Provider value={{ cartItems, addItemToCart, removeItemFromCart, clearCart, totalItems }}>
+    <CartContext.Provider value={{ cartItems, addItemToCart, removeItemFromCart, clearCart, totalItems, uniqueItemsCount }}> {/* Exponera uniqueItemsCount */}
       {children}
     </CartContext.Provider>
   );

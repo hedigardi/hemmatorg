@@ -1,6 +1,7 @@
 import React from "react";
 import RatingStars from "./RatingStars";
 import Button from "./form/Button"; // Importera Button
+import { Edit, Trash2 } from "lucide-react"; // Importera Edit och Trash2 ikoner
 
 export default function DishCard({ dish, onClick, showAdminControls = false, onEdit, onDelete }) {
   return (
@@ -29,9 +30,11 @@ export default function DishCard({ dish, onClick, showAdminControls = false, onE
       </div>
       {showAdminControls && (
         <div className="p-4 border-t dark:border-gray-700 flex justify-end space-x-2">
-          <Button variant="secondary" onClick={onEdit} size="sm">Redigera</Button>
-          <Button variant="outline" onClick={onDelete} className="border-red-500 text-red-500 hover:bg-red-50" size="sm">
-            Ta bort
+          <Button variant="secondary" onClick={onEdit} size="sm" className="flex items-center">
+            <Edit className="mr-1 h-4 w-4" /> Redigera
+          </Button>
+          <Button variant="destructive_outline" onClick={onDelete} size="sm" className="flex items-center">
+            <Trash2 className="mr-1 h-4 w-4" /> Ta bort
           </Button>
         </div>
       )}
