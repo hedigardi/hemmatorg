@@ -74,21 +74,21 @@ export default function Navbar() {
               <>
                 {/* Inloggade användarens standardlänkar */}
                 {/* 1. Hem */}
-                <Link to="/" className="flex items-center gap-1 px-3 py-2 rounded-md hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors">
+                <Link to="/" className="flex items-center gap-1 px-3 py-2 rounded-full hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors">
                   <Home className="h-4 w-4" /> Hem
                 </Link>
                 {/* 2. Så funkar det */}
-                <Link to="/how-it-works" className="flex items-center gap-1 px-3 py-2 rounded-md hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors">
+                <Link to="/how-it-works" className="flex items-center gap-1 px-3 py-2 rounded-full hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors">
                   <Info className="h-4 w-4" /> Så funkar det
                 </Link>
                 {/* 3. Säljpanel */}
-                <Link to="/seller" className="flex items-center gap-1 px-3 py-2 rounded-md hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors">
+                <Link to="/seller" className="flex items-center gap-1 px-3 py-2 rounded-full hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors">
                   <UtensilsCrossed className="h-4 w-4" /> Säljpanel
                 </Link>
                 {/* 4. Logga ut */}
                 <button 
                   onClick={handleLogout} 
-                  className="flex items-center gap-1 px-3 py-2 rounded-md hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors"
+                  className="flex items-center gap-1 px-3 py-2 rounded-full hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors"
                 >
                   <LogOut className="h-4 w-4" /> Logga ut
                 </button>
@@ -139,19 +139,19 @@ export default function Navbar() {
               </>
             ) : (
               <>
-                <Link to="/" onClick={() => setIsOpen(false)} className="flex items-center gap-2 block px-3 py-2 rounded-md hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors">
+                <Link to="/" onClick={() => setIsOpen(false)} className="flex items-center gap-2 block px-3 py-2 rounded-full hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors">
                   <Home className="h-5 w-5" /> Hem
                 </Link>
-                <Link to="/how-it-works" onClick={() => setIsOpen(false)} className="flex items-center gap-2 block px-3 py-2 rounded-md hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors">
+                <Link to="/how-it-works" onClick={() => setIsOpen(false)} className="flex items-center gap-2 block px-3 py-2 rounded-full hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors">
                   <Info className="h-5 w-5" /> Så funkar det
                 </Link>
                 {/* Säljarspecifika länkar, kan villkoras om du har rollhantering senare */}
-                <Link to="/seller" onClick={() => setIsOpen(false)} className="flex items-center gap-2 block px-3 py-2 rounded-md hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors">
+                <Link to="/seller" onClick={() => setIsOpen(false)} className="flex items-center gap-2 block px-3 py-2 rounded-full hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors">
                   <UtensilsCrossed className="h-5 w-5" /> Säljpanel
                 </Link>
                 <button 
                   onClick={handleLogout} 
-                  className="flex items-center gap-2 w-full text-left px-3 py-2 rounded-md hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors"
+                  className="flex items-center gap-2 w-full text-left px-3 py-2 rounded-full hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors"
                 >
                   <LogOut className="h-5 w-5" /> Logga ut
                 </button>

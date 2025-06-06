@@ -38,7 +38,7 @@ export default function Home() {
       {/* Hero Section - Bakgrunden är redan vit/ljusgrå från App.jsx eller body, så ingen extra bg här behövs om det är designen */}
       <section className="bg-pageTheme-hero dark:bg-pageTheme-heroDark py-16 md:py-24 text-center shadow-sm"> {/* Uppdaterad mörk bakgrund för hero */}
         <div className="container mx-auto px-6">
-          <h1 className="text-4xl md:text-5xl font-bold text-primary-main dark:text-primary-light mb-6">
+          <h1 className="text-4xl md:text-5xl font-bold text-primary-main dark:text-primary-main mb-6">
             Välkommen till HemmaTorg!
           </h1>
           <p className="text-lg md:text-xl text-gray-600 dark:text-gray-300 mb-10 max-w-2xl mx-auto">

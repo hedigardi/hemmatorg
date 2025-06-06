@@ -39,7 +39,7 @@ export default function HowItWorksPage() {
   return (
     <div className="max-w-4xl mx-auto space-y-12 py-8 px-4 md:px-0">
       <section className="text-center">
-        <h1 className="text-4xl font-bold text-primary-main dark:text-primary-light mb-4">Så Funkar HemmaTorg!</h1>
+        <h1 className="text-4xl font-bold text-primary-main mb-4">Så Funkar HemmaTorg!</h1>
         <p className="text-lg text-gray-700 dark:text-gray-300 max-w-2xl mx-auto">
           HemmaTorg är din plattform för att köpa och sälja hemlagad mat. Enkelt, tryggt och gott!
         </p>
@@ -129,7 +129,7 @@ export default function HowItWorksPage() {
 
       <section className="text-center py-8">
         <div className="bg-pageTheme-card dark:bg-gray-700 inline-block p-6 rounded-lg shadow-md">
-          <h3 className="text-2xl font-semibold text-primary-main dark:text-primary-light flex items-center justify-center mb-3">
+          <h3 className="text-2xl font-semibold text-primary-main flex items-center justify-center mb-3">
             <ShieldCheck className="h-8 w-8 mr-3 text-primary-main" /> Trygghet & Ansvar
           </h3>
             <p className="text-gray-700 dark:text-gray-300 max-w-xl mx-auto">
