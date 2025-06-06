@@ -1,15 +1,17 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useCallback } from "react";
 import { useNavigate } from "react-router-dom";
 import { getAllDishes } from "../services/dishService"; // Importera den nya service-funktionen
 import DishCard from "../components/DishCard"; // Importera DishCard
-import FilterPanel from "../components/FilterPanel"; // Importera FilterPanel (för framtida bruk)
+import DishFilters from "../components/DishFilters"; // Importera den nya filterkomponenten
 import Button from "../components/form/Button"; // Importera Button
+import { AlertTriangle } from "lucide-react"; // För "inga resultat"-meddelande
 
 export default function Home() {
-  const [dishes, setDishes] = useState([]);
+  const [allDishesFromDB, setAllDishesFromDB] = useState([]); // Alla rätter från DB
+  const [displayedDishes, setDisplayedDishes] = useState([]); // Rätter som visas efter filtrering
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-  // const [filters, setFilters] = useState({ city: "", category: "" }); // För framtida filtrering
+  const [filters, setFilters] = useState({ city: "", category: "", searchTerm: "" });
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -17,7 +19,8 @@ export default function Home() {
       try {
         setLoading(true);
         const fetchedDishes = await getAllDishes();
-        setDishes(fetchedDishes);
+        setAllDishesFromDB(fetchedDishes);
+        setDisplayedDishes(fetchedDishes); // Visa alla rätter initialt
         setError(null);
       } catch (err) {
         console.error("Failed to fetch dishes:", err);
@@ -26,9 +29,34 @@ export default function Home() {
         setLoading(false);
       }
     };
-
     fetchDishes();
   }, []); // Körs en gång när komponenten mountas
+
+  const handleFilterChange = useCallback((newFilters) => {
+    setFilters(newFilters);
+    setLoading(true); // Visa laddning medan filtrering sker
+
+    let tempDishes = [...allDishesFromDB];
+
+    // Filtrera på stad (om 'city'-fältet finns på dina dish-objekt)
+    // if (newFilters.city && newFilters.city !== "") {
+    //   tempDishes = tempDishes.filter(dish => dish.city && dish.city.toLowerCase() === newFilters.city.toLowerCase());
+    // }
+
+    if (newFilters.category && newFilters.category !== "") {
+      tempDishes = tempDishes.filter(dish => dish.category && dish.category.toLowerCase() === newFilters.category.toLowerCase());
+    }
+
+    if (newFilters.searchTerm) {
+      const searchTermLower = newFilters.searchTerm.toLowerCase();
+      tempDishes = tempDishes.filter(dish =>
+        (dish.title && dish.title.toLowerCase().includes(searchTermLower)) ||
+        (dish.description && dish.description.toLowerCase().includes(searchTermLower))
+      );
+    }
+    setDisplayedDishes(tempDishes);
+    setLoading(false);
+  }, [allDishesFromDB]);
 
   if (loading) return <p className="p-4 text-center">Laddar maträtter...</p>;
   if (error) return <p className="p-4 text-center text-red-500">{error}</p>;
@@ -53,19 +81,23 @@ export default function Home() {
       {/* Dishes Section */}
       <section id="dishes-section" className="py-12 md:py-16 bg-pageTheme-light dark:bg-gray-900"> {/* Huvudsektionens bakgrund */}
         <div className="container mx-auto px-6">
-        <h2 className="text-3xl md:text-4xl font-bold mb-10 text-center text-gray-800 dark:text-white">
-          
-        </h2>
-      {/* <FilterPanel filters={filters} setFilters={setFilters} /> // Kan läggas till senare */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-        {dishes.length > 0 ? (
-          dishes.map((dish) => (
-            <DishCard key={dish.id} dish={dish} onClick={() => navigate(`/dish/${dish.id}`)} />
-          ))
-        ) : (
-          <p>Inga maträtter tillgängliga för tillfället.</p>
-        )}
-      </div>
+          <DishFilters onFilterChange={handleFilterChange} />
+
+          {loading && displayedDishes.length === 0 ? ( // Visar laddning om vi filtrerar och inte har några resultat än
+            <p className="p-4 text-center">Filtrerar maträtter...</p>
+          ) : !loading && displayedDishes.length === 0 ? (
+            <div className="text-center py-10">
+              <AlertTriangle className="mx-auto h-12 w-12 text-gray-400 dark:text-gray-500 mb-4" />
+              <p className="text-xl text-gray-700 dark:text-gray-200">Inga maträtter matchade din sökning.</p>
+              <p className="text-sm text-gray-500 dark:text-gray-400">Prova att ändra dina filter eller söktermer.</p>
+            </div>
+          ) : (
+            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+              {displayedDishes.map((dish) => (
+                <DishCard key={dish.id} dish={dish} onClick={() => navigate(`/dish/${dish.id}`)} />
+              ))}
+            </div>
+          )}
         </div>
       </section>
     </div>
