@@ -2,7 +2,7 @@ import React from 'react';
 import { useNavigate } from 'react-router-dom'; // Importera useNavigate
 import { useCart } from '../context/CartContext';
 import Button from '../components/form/Button'; // Importera Button
-import { Trash2 } from 'lucide-react'; // Importera Trash2 ikon
+import { Trash2, ShoppingCart } from 'lucide-react'; // Importera Trash2 och ShoppingCart ikoner
 
 export default function Cart() {
   const { cartItems, addItemToCart, removeItemFromCart, clearCart } = useCart();
@@ -26,7 +26,10 @@ export default function Cart() {
 
   return (
     <div className="container mx-auto p-4 md:p-8">
-      <h1 className="text-3xl font-bold text-center text-orange-500 mb-6">Din varukorg</h1>
+      <h1 className="text-3xl font-bold text-center text-orange-500 mb-6 flex items-center justify-center">
+        <ShoppingCart className="mr-2 h-8 w-8" /> {/* Lägg till ikonen här */}
+        Din varukorg
+      </h1>
 
       {cartItems.length === 0 ? (
         <p className="text-center text-gray-600 dark:text-gray-300">Din varukorg är tom.</p>
