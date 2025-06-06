@@ -21,7 +21,7 @@ export default function Login() {
     try {
       // Här kan du senare använda selectedRole om din login-logik behöver det
       await login(email, password, selectedRole); // Skickar med selectedRole
-      navigate("/"); // Navigera till startsidan eller profilsidan efter inloggning
+      navigate("/seller"); // Navigera till startsidan eller profilsidan efter inloggning
     } catch (err) {
       setError("Felaktig e-postadress eller lösenord."); // Generellt felmeddelande
       console.error("Login failed:", err);
